@@ -45,11 +45,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) throws PersistenceException {
+        String oldPassword = "";
+        if (user.getId() != null && getUserById(user.getId()) != null)
+            oldPassword = getUserById(user.getId()).getPassword();
         if (user.getPassword().equals(user.getConfirmPassword())) {
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            if (user.getPassword() != "") {
+                user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            } else
+                user.setPassword(oldPassword);
             roleService.instRole(user);
             return userRepository.save(user);
         } else
             return null;
+    }
+
+    @Override
+    public User savePostConstruct(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        roleService.instRole(user);
+        return userRepository.save(user);
     }
 }

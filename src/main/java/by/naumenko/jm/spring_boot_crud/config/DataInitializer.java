@@ -2,11 +2,9 @@ package by.naumenko.jm.spring_boot_crud.config;
 
 import by.naumenko.jm.spring_boot_crud.model.Role;
 import by.naumenko.jm.spring_boot_crud.model.User;
-import by.naumenko.jm.spring_boot_crud.repo.UserRepository;
 import by.naumenko.jm.spring_boot_crud.service.RoleService;
 import by.naumenko.jm.spring_boot_crud.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +31,7 @@ public class DataInitializer {
         user.setConfirmPassword(user.getPassword());
 
 
-        userServise.saveUser(user);
+        userServise.savePostConstruct(user);
 
         User user2 = User.builder()
                 .username("test")
@@ -45,6 +43,6 @@ public class DataInitializer {
                 .build();
         user2.setConfirmPassword(user2.getPassword());
 
-        userServise.saveUser(user2);
+        userServise.savePostConstruct(user2);
     }
 }
